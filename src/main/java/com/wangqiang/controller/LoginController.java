@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
@@ -23,43 +24,40 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Auther: wangqiang
  * @Date: 2020/2/26 22:30
  */
-@Controller
+@RestController
 public class LoginController {
     @Autowired
     private LoginService loginService;
 
     //登陆页面
-    @GetMapping(value = "/login")
-    public String login() {
-        return "login";
+    @GetMapping("login")
+    public Object login() {
+        return "登陆页面";
     }
 
     //登陆请求
-    @PostMapping("/login")
-    public String doLogin(@RequestParam String username,
-                          @RequestParam String password,
-                          Model model) {
+    @GetMapping("doLogin")
+    public Object doLogin(@RequestParam String username, @RequestParam String password) {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
         } catch (IncorrectCredentialsException ice) {
-            model.addAttribute("msg","密码错误");
-            return "login";
+            return "密码错误";
         } catch (UnknownAccountException uae) {
-            model.addAttribute("msg","用户名错误");
-            return "login";
+            return "用户名错误";
         }
 
         User user = loginService.getUserByName(username);
         subject.getSession().setAttribute("user", user);
-        return "redirct:/index";
+        return "登陆成功";
     }
 
     //未授权请求index将会跳转到登陆页面
     @GetMapping("/index")
-    public String index() {
-        return "index";
+    public Object index() {
+        return "授权认证成功页面";
     }
-
 }
+
+

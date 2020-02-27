@@ -15,16 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class AuthcController {
-
     //未授权页面
     @GetMapping("unauthc")
-    public String unauthc() {
+    public Object unauthc() {
         return "对不起，您的权限不够";
     }
 
     //查看用户权限信息
     @GetMapping("/user")
-    public String user() {
+    public Object user() {
         Subject subject = SecurityUtils.getSubject();
         User user = (User) subject.getSession().getAttribute("user");
         return user.toString();

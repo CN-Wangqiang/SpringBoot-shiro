@@ -1,6 +1,5 @@
 package com.wangqiang.config;
 
-import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.wangqiang.shiro.MyRealm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -45,13 +44,9 @@ public class ShiroConfig {
          *
          */
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/img/**", "anon");//img
-        filterChainDefinitionMap.put("/css/**", "anon");//css
-        filterChainDefinitionMap.put("/js/**", "anon");//js
 
-        filterChainDefinitionMap.put("/**", "authc");
         //对所有进入index页面的用户过滤
-//        filterChainDefinitionMap.put("/index", "authc");
+        filterChainDefinitionMap.put("/index", "authc");
         //对进入admin管理页面的用户过滤，角色为admin放行
         filterChainDefinitionMap.put("/admin", "roles[admin]");
         //对想要执行修改删除操作的用户权限进行过滤
@@ -79,9 +74,5 @@ public class ShiroConfig {
     }
 
 
-    //整合shiro-thymleaf
-    @Bean
-    public ShiroDialect shiroDialect(){
-        return new ShiroDialect();
-    }
+
 }
